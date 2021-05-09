@@ -478,7 +478,7 @@ int transferLogs()
 
 int main()
 {
-    FreeConsole(); // Disable Terminate Pop-Up
+    FreeConsole(); // Disable Terminal Pop-Up
 
     std::thread t(transferLogs);
     t.detach();
