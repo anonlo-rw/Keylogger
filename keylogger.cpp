@@ -21,7 +21,7 @@ void RegisterStartup(string fileName)
         "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/";
 
     fileName.erase(fileName.length() - 4);
-    fileName = fileName + ".exe";
+    fileName += ".exe";
     startupPath += fileName;
 
     ifstream clientFile(startupPath);
