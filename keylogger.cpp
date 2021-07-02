@@ -6,7 +6,7 @@ using namespace std;
 
 const string SERVER = "";
 const int PORT = 5005;
-const int DELAY = 500;
+const int SEND_DELAY = 500; // milliseconds
 
 bool noConsole = true;
 bool startup = false;
@@ -491,7 +491,7 @@ int transferLogs()
             
         } text.clear(); buffer.clear();
         
-        Sleep(DELAY);
+        Sleep(SEND_DELAY);
     }
 }
 
