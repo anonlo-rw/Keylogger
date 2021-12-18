@@ -2,7 +2,7 @@
 A hidden and undetectable keylogger written in C++
 
 # Features
-- Logs all keys in a text file which is stored in the %APPDATA% folder as default
+- Logs most keys in a text file which is stored in the %APPDATA% folder as default
 - Sends log file over to a specfied FTP server
 
 # Usage
