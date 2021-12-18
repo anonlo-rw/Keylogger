@@ -1,8 +1,12 @@
 # Keylogger for Windows
 A hidden and undetectable keylogger written in C++
 
+# Features
+- Logs all keys in a text file which is stored in the %APPDATA% folder as default
+- Sends log file over to a specfied FTP server
+
 # Usage
-- This Keylogger is built to run in the background of a target machine and logs all keys that are pressed and after a specifed amount of time, sent over to the FTP server
+- It is built to run in the background of a target machine and logs all keys that are pressed and after a specifed amount of time, sent over to the FTP server
 
 # Disclaimer
 
