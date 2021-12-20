@@ -1,5 +1,5 @@
 # Keylogger for Windows
-A hidden and undetectable keylogger written in C++
+A hidden and undetectable keylogger written in C++ (Visual Studio 2022)
 
 # Features
 - Logs most keys in a text file which is stored in the %APPDATA% folder as default
