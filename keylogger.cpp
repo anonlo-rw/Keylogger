@@ -456,7 +456,11 @@ void FTP_SendLogs()
     {
         // connect to FTP server
         HINTERNET InternetConnection = InternetOpen(NULL, INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
-        HINTERNET ftpSession = InternetConnectA(InternetConnection, FTP_SERVER.data(), INTERNET_DEFAULT_FTP_PORT, FTP_USERNAME.data(), FTP_PASSWORD.data(), INTERNET_SERVICE_FTP, INTERNET_FLAG_PASSIVE, 0);
+
+        HINTERNET ftpSession = InternetConnectA(InternetConnection, FTP_SERVER.data(),
+            INTERNET_DEFAULT_FTP_PORT, FTP_USERNAME.data(),
+            FTP_PASSWORD.data(), INTERNET_SERVICE_FTP,
+            INTERNET_FLAG_PASSIVE, 0);
 
         // upload file
         FtpPutFileA(ftpSession, LOGS_FILE_PATH.data(), FILE_NAME.data(), FTP_TRANSFER_TYPE_BINARY, 0);
