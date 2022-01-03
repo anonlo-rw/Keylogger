@@ -3,7 +3,7 @@ A hidden and undetectable keylogger written in C++
 
 # Features
 - Logs most keys in a text file which is stored in the %APPDATA% folder as default
-- Sends log file over to a specfied FTP server
+- Sends log file over to a specified FTP server
 - Ability to run in the background acting as a system process
 
 # Usage
