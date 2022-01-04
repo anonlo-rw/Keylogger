@@ -1,6 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <iostream>
 #include <windows.h>
 #include <wininet.h>
 #include <thread>
