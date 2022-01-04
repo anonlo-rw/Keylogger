@@ -1,6 +1,10 @@
 # Keylogger for Windows
 A hidden and undetectable keylogger written in C++
 
+# Compilers
+- MinGW 32/64 Bit (recommended)
+- Visual C++
+
 # Features
 - Logs most keys in a text file which is stored in the %APPDATA% folder as default
 - Sends log file over to a specified FTP server
